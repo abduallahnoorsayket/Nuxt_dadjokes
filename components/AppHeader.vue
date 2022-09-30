@@ -24,4 +24,12 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.navbar-nav a {
+  display: inline-block;
+  /* background: #333; */
+  color: #fff;
+  padding: 0.3rem 1rem;
+  margin-right: 0.5rem;
+}
+</style>

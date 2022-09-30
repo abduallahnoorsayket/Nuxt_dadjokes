@@ -1,26 +1,35 @@
 <template>
   <div>
-    <h1>this is the about page of jokes</h1>
+    <search-jokes v-on:search-text="searchText" />
+    <joke
+      v-for="joke in jokes"
+      :key="joke.id"
+      :id="joke.id"
+      :joke="joke.joke"
+    />
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import Joke from "../../components/Joke.vue";
+import SearchJokes from "../../components/SearchJokes.vue";
 
 export default {
+  components: { Joke, SearchJokes },
   data() {
     return {
       jokes: [],
     };
   },
-  created() {
+  async created() {
     const config = {
       headers: {
         Accept: "application/json",
       },
     };
     try {
-      const res = axios.get("https://icanhazdadjoke.com/search", config);
+      const res = await axios.get("https://icanhazdadjoke.com/search", config);
       console.log("24", res.data.results);
       this.jokes = res.data.results;
     } catch (error) {
@@ -39,6 +48,24 @@ export default {
         },
       ],
     };
+  },
+  methods: {
+    async searchText(text) {
+      const config = {
+        headers: {
+          Accept: "application/json",
+        },
+      };
+      try {
+        const res = await axios.get(
+          `https://icanhazdadjoke.com/search?term=${text}`,
+          config
+        );
+        this.jokes = res.data.results;
+      } catch (error) {
+        console.log(error);
+      }
+    },
   },
 };
 </script>
